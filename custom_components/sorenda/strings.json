@@ -34,11 +34,16 @@
         "title": "Sorenda: access and reminders",
         "data": {
           "speakers": "Voices",
-          "ha_users": "Home Assistant users (typed chat)",
+          "ha_users": "Home Assistant users (typing to Assist)",
           "speaker_entity": "Speaker sensor",
           "tts_engine": "Text-to-speech for reminders"
         },
-        "description": "Who may use this account by voice or from the chat. With no voices and no users listed, the account is open to everyone. Voices are written as the speaker sensor names them. An unknown voice or a stale reading gets no access."
+        "description": "Who may use this account by voice or from the chat. With no voices and no users listed, the account is open to everyone. Voices are written as the speaker sensor names them. An unknown voice or a stale reading gets no access.",
+        "data_description": {
+          "speakers": "Names exactly as the speaker sensor reports them, e.g. from your voice recognition. A voice request is let in only if the person speaking is listed here.",
+          "ha_users": "For requests typed in the Assist chat of the Home Assistant app or website: there is no voice, so the logged-in user decides. Tick yourself to use this account when typing.",
+          "speaker_entity": "The sensor that holds the speaker's name. A sensor written by an external service disappears after a Home Assistant restart and comes back with the next spoken phrase; until then voice access stays closed."
+        }
       }
     }
   },

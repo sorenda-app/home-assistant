@@ -34,11 +34,16 @@
         "title": "Sorenda: Zugriff und Erinnerungen",
         "data": {
           "speakers": "Stimmen",
-          "ha_users": "Home-Assistant-Benutzer (Text-Chat)",
+          "ha_users": "Home-Assistant-Benutzer (Eingabe im Assist-Chat)",
           "speaker_entity": "Sprecher-Sensor",
           "tts_engine": "Sprachausgabe für Erinnerungen"
         },
-        "description": "Wer dieses Konto per Stimme oder im Chat nutzen darf. Ohne eingetragene Stimmen und Benutzer steht das Konto allen offen. Stimmen werden so geschrieben, wie der Sprecher-Sensor sie nennt. Eine unbekannte Stimme oder ein veralteter Messwert erhält keinen Zugriff."
+        "description": "Wer dieses Konto per Stimme oder im Chat nutzen darf. Ohne eingetragene Stimmen und Benutzer steht das Konto allen offen. Stimmen werden so geschrieben, wie der Sprecher-Sensor sie nennt. Eine unbekannte Stimme oder ein veralteter Messwert erhält keinen Zugriff.",
+        "data_description": {
+          "speakers": "Namen genau so, wie der Sprecher-Sensor sie meldet, etwa aus deiner Stimmerkennung. Eine Sprachanfrage wird nur zugelassen, wenn die sprechende Person hier steht.",
+          "ha_users": "Für Anfragen, die im Assist-Chat der Home-Assistant-App oder -Website getippt werden: Dort gibt es keine Stimme, also entscheidet der angemeldete Benutzer. Wähle dich selbst aus, um dieses Konto beim Tippen zu nutzen.",
+          "speaker_entity": "Der Sensor mit dem Namen der sprechenden Person. Ein Sensor, den ein externer Dienst schreibt, verschwindet nach einem Neustart von Home Assistant und kommt mit dem nächsten gesprochenen Satz zurück; bis dahin bleibt der Sprachzugriff gesperrt."
+        }
       }
     }
   },

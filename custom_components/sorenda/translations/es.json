@@ -34,11 +34,16 @@
         "title": "Sorenda: acceso y recordatorios",
         "data": {
           "speakers": "Voces",
-          "ha_users": "Usuarios de Home Assistant (chat escrito)",
+          "ha_users": "Usuarios de Home Assistant (al escribir en Assist)",
           "speaker_entity": "Sensor de hablante",
           "tts_engine": "Texto a voz para recordatorios"
         },
-        "description": "Quién puede usar esta cuenta por voz o desde el chat. Si no hay voces ni usuarios, la cuenta está abierta a todos. Las voces se escriben tal como las nombra el sensor de hablante. Una voz desconocida o una lectura antigua no obtiene acceso."
+        "description": "Quién puede usar esta cuenta por voz o desde el chat. Si no hay voces ni usuarios, la cuenta está abierta a todos. Las voces se escriben tal como las nombra el sensor de hablante. Una voz desconocida o una lectura antigua no obtiene acceso.",
+        "data_description": {
+          "speakers": "Nombres tal como los informa el sensor de hablante, por ejemplo tu reconocimiento de voz. Una petición por voz solo pasa si quien habla está en esta lista.",
+          "ha_users": "Para peticiones escritas en el chat de Assist de la app o la web de Home Assistant: no hay voz, así que decide el usuario con el que has iniciado sesión. Márcate para usar esta cuenta al escribir.",
+          "speaker_entity": "El sensor con el nombre de quien habla. Un sensor escrito por un servicio externo desaparece al reiniciar Home Assistant y vuelve con la siguiente frase hablada; hasta entonces el acceso por voz queda cerrado."
+        }
       }
     }
   },
