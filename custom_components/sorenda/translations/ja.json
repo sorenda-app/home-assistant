@@ -1,0 +1,121 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sorenda",
+        "description": "Sorenda で個人用 API キーを作成してください：設定 → API キー。権限は read と write が必要です。",
+        "data": {
+          "name": "アカウント名",
+          "url": "Sorenda のアドレス",
+          "api_key": "API キー"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Sorenda：新しい API キー",
+        "data": {
+          "api_key": "API キー"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Sorenda がキーを拒否しました。",
+      "invalid_format": "Sorenda のキーは srnd_ で始まります。",
+      "cannot_connect": "このアドレスで Sorenda に接続できません。",
+      "missing_scope": "キーには read と write の権限が必要です。"
+    },
+    "abort": {
+      "already_configured": "このキーはすでに設定されています。",
+      "reauth_successful": "キーを更新しました。"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Sorenda：アクセスとリマインダー",
+        "data": {
+          "speakers": "声",
+          "ha_users": "Home Assistant ユーザー（テキストチャット）",
+          "speaker_entity": "話者センサー",
+          "tts_engine": "リマインダーの音声合成"
+        },
+        "description": "このアカウントを声またはチャットで使える人を指定します。声もユーザーも指定しない場合は、誰でも使えます。声は話者センサーが示す名前のとおりに入力してください。不明な声や古い読み取り値ではアクセスできません。"
+      }
+    }
+  },
+  "entity": {
+    "todo": {
+      "tasks": {
+        "name": "タスク"
+      }
+    },
+    "sensor": {
+      "next_reminder": {
+        "name": "次のリマインダー"
+      }
+    }
+  },
+  "services": {
+    "create_note": {
+      "name": "ノートを作成",
+      "description": "Sorenda にノートを保存します。",
+      "fields": {
+        "account": {
+          "name": "アカウント",
+          "description": "使用する Sorenda アカウント。既定は最初のアカウントです。"
+        },
+        "text": {
+          "name": "テキスト",
+          "description": "ノートの内容。"
+        },
+        "title": {
+          "name": "タイトル",
+          "description": "任意のタイトル。"
+        },
+        "tags": {
+          "name": "タグ",
+          "description": "任意のタグ。"
+        }
+      }
+    },
+    "add_task": {
+      "name": "タスクを追加",
+      "description": "Sorenda にタスクを追加します。",
+      "fields": {
+        "account": {
+          "name": "アカウント",
+          "description": "使用する Sorenda アカウント。既定は最初のアカウントです。"
+        },
+        "text": {
+          "name": "テキスト",
+          "description": "やること。"
+        },
+        "due": {
+          "name": "期限",
+          "description": "日付（YYYY-MM-DD）または日時（ISO 8601）。"
+        },
+        "remind_minutes_before": {
+          "name": "事前に通知",
+          "description": "期限の何分前に通知するか。期限が必要です。"
+        }
+      }
+    },
+    "add_reminder": {
+      "name": "リマインダーを追加",
+      "description": "指定した日時に通知するノートを保存します。",
+      "fields": {
+        "account": {
+          "name": "アカウント",
+          "description": "使用する Sorenda アカウント。既定は最初のアカウントです。"
+        },
+        "text": {
+          "name": "テキスト",
+          "description": "通知する内容。"
+        },
+        "at": {
+          "name": "日時",
+          "description": "通知する日時（ISO 8601）。"
+        }
+      }
+    }
+  }
+}

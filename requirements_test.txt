@@ -1,0 +1,6 @@
+pytest-homeassistant-custom-component
+# Imported by Home Assistant's tts and conversation components but not pulled in by the plugin
+mutagen
+ha-ffmpeg
+hassil
+gazetteer_matcher

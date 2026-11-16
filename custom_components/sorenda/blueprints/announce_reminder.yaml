@@ -1,0 +1,73 @@
+blueprint:
+  name: Sorenda — speak reminders
+  description: >-
+    Speaks Sorenda reminders on a speaker when they fire. The Sorenda
+    integration renders each reminder to speech and fires the
+    `sorenda_reminder` event with an `audio_url`; this plays it as an
+    announcement, so music ducks and resumes where the speaker supports it.
+  domain: automation
+  author: Sorenda
+  source_url: https://github.com/sorenda-app/home-assistant/blob/main/custom_components/sorenda/blueprints/announce_reminder.yaml
+  homeassistant:
+    min_version: "2026.10.0"
+  input:
+    speaker:
+      name: Speaker
+      description: Where reminders are spoken.
+      selector:
+        entity:
+          filter:
+            - domain: media_player
+    account:
+      name: Account
+      description: Only this Sorenda account's reminders. Empty for every account.
+      default: ""
+      selector:
+        config_entry:
+          integration: sorenda
+    quiet_start:
+      name: Quiet from
+      description: No reminders are spoken from this time…
+      default: "23:00:00"
+      selector:
+        time:
+    quiet_end:
+      name: Quiet until
+      description: …until this time. Set both to the same time to always speak.
+      default: "08:00:00"
+      selector:
+        time:
+
+mode: queued
+max: 5
+
+variables:
+  account: !input account
+  quiet_start: !input quiet_start
+  quiet_end: !input quiet_end
+
+triggers:
+  - trigger: event
+    event_type: sorenda_reminder
+
+conditions:
+  - condition: template
+    value_template: "{{ trigger.event.data.audio_url not in (none, '') }}"
+  - condition: template
+    value_template: "{{ account in (none, '') or trigger.event.data.entry_id == account }}"
+  - condition: template
+    value_template: >-
+      {% set t = now().strftime('%H:%M:%S') %}
+      {% if quiet_start == quiet_end %}true
+      {% elif quiet_start < quiet_end %}{{ not (quiet_start <= t < quiet_end) }}
+      {% else %}{{ quiet_end <= t < quiet_start }}
+      {% endif %}
+
+actions:
+  - action: media_player.play_media
+    target:
+      entity_id: !input speaker
+    data:
+      media_content_id: "{{ trigger.event.data.audio_url }}"
+      media_content_type: music
+      announce: true

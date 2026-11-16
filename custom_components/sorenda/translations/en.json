@@ -1,0 +1,121 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sorenda",
+        "description": "Create a personal API key in Sorenda: Settings → API Keys, with the read and write scopes.",
+        "data": {
+          "name": "Account name",
+          "url": "Sorenda address",
+          "api_key": "API key"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Sorenda: new API key",
+        "data": {
+          "api_key": "API key"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Sorenda rejected the key.",
+      "invalid_format": "A Sorenda key starts with srnd_.",
+      "cannot_connect": "Cannot reach Sorenda at this address.",
+      "missing_scope": "The key needs the read and write scopes."
+    },
+    "abort": {
+      "already_configured": "This key is already set up.",
+      "reauth_successful": "The key is updated."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Sorenda: access and reminders",
+        "data": {
+          "speakers": "Voices",
+          "ha_users": "Home Assistant users (typed chat)",
+          "speaker_entity": "Speaker sensor",
+          "tts_engine": "Text-to-speech for reminders"
+        },
+        "description": "Who may use this account by voice or from the chat. With no voices and no users listed, the account is open to everyone. Voices are written as the speaker sensor names them. An unknown voice or a stale reading gets no access."
+      }
+    }
+  },
+  "entity": {
+    "todo": {
+      "tasks": {
+        "name": "Tasks"
+      }
+    },
+    "sensor": {
+      "next_reminder": {
+        "name": "Next reminder"
+      }
+    }
+  },
+  "services": {
+    "create_note": {
+      "name": "Create note",
+      "description": "Save a note in Sorenda.",
+      "fields": {
+        "account": {
+          "name": "Account",
+          "description": "Which Sorenda account; the first one by default."
+        },
+        "text": {
+          "name": "Text",
+          "description": "The note."
+        },
+        "title": {
+          "name": "Title",
+          "description": "Optional title."
+        },
+        "tags": {
+          "name": "Tags",
+          "description": "Optional tags."
+        }
+      }
+    },
+    "add_task": {
+      "name": "Add task",
+      "description": "Add a task to Sorenda.",
+      "fields": {
+        "account": {
+          "name": "Account",
+          "description": "Which Sorenda account; the first one by default."
+        },
+        "text": {
+          "name": "Text",
+          "description": "What to do."
+        },
+        "due": {
+          "name": "Due",
+          "description": "A day (YYYY-MM-DD) or a moment (ISO 8601)."
+        },
+        "remind_minutes_before": {
+          "name": "Remind before",
+          "description": "Minutes before the deadline; needs a due."
+        }
+      }
+    },
+    "add_reminder": {
+      "name": "Add reminder",
+      "description": "Save a note that reminds at a moment.",
+      "fields": {
+        "account": {
+          "name": "Account",
+          "description": "Which Sorenda account; the first one by default."
+        },
+        "text": {
+          "name": "Text",
+          "description": "What to remind about."
+        },
+        "at": {
+          "name": "At",
+          "description": "When, ISO 8601."
+        }
+      }
+    }
+  }
+}

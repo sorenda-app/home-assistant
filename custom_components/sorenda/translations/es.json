@@ -1,0 +1,121 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sorenda",
+        "description": "Crea una clave API personal en Sorenda: Ajustes → Claves API, con los permisos read y write.",
+        "data": {
+          "name": "Nombre de la cuenta",
+          "url": "Dirección de Sorenda",
+          "api_key": "Clave API"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Sorenda: nueva clave API",
+        "data": {
+          "api_key": "Clave API"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Sorenda rechazó la clave.",
+      "invalid_format": "Una clave de Sorenda empieza por srnd_.",
+      "cannot_connect": "No se puede conectar con Sorenda en esta dirección.",
+      "missing_scope": "La clave necesita los permisos read y write."
+    },
+    "abort": {
+      "already_configured": "Esta clave ya está configurada.",
+      "reauth_successful": "La clave se ha actualizado."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Sorenda: acceso y recordatorios",
+        "data": {
+          "speakers": "Voces",
+          "ha_users": "Usuarios de Home Assistant (chat escrito)",
+          "speaker_entity": "Sensor de hablante",
+          "tts_engine": "Texto a voz para recordatorios"
+        },
+        "description": "Quién puede usar esta cuenta por voz o desde el chat. Si no hay voces ni usuarios, la cuenta está abierta a todos. Las voces se escriben tal como las nombra el sensor de hablante. Una voz desconocida o una lectura antigua no obtiene acceso."
+      }
+    }
+  },
+  "entity": {
+    "todo": {
+      "tasks": {
+        "name": "Tareas"
+      }
+    },
+    "sensor": {
+      "next_reminder": {
+        "name": "Próximo recordatorio"
+      }
+    }
+  },
+  "services": {
+    "create_note": {
+      "name": "Crear nota",
+      "description": "Guardar una nota en Sorenda.",
+      "fields": {
+        "account": {
+          "name": "Cuenta",
+          "description": "Qué cuenta de Sorenda; por defecto, la primera."
+        },
+        "text": {
+          "name": "Texto",
+          "description": "La nota."
+        },
+        "title": {
+          "name": "Título",
+          "description": "Título opcional."
+        },
+        "tags": {
+          "name": "Etiquetas",
+          "description": "Etiquetas opcionales."
+        }
+      }
+    },
+    "add_task": {
+      "name": "Añadir tarea",
+      "description": "Añadir una tarea a Sorenda.",
+      "fields": {
+        "account": {
+          "name": "Cuenta",
+          "description": "Qué cuenta de Sorenda; por defecto, la primera."
+        },
+        "text": {
+          "name": "Texto",
+          "description": "Qué hay que hacer."
+        },
+        "due": {
+          "name": "Fecha límite",
+          "description": "Un día (AAAA-MM-DD) o un momento (ISO 8601)."
+        },
+        "remind_minutes_before": {
+          "name": "Recordar antes",
+          "description": "Minutos antes de la fecha límite; requiere una fecha límite."
+        }
+      }
+    },
+    "add_reminder": {
+      "name": "Añadir recordatorio",
+      "description": "Guardar una nota que avisa en un momento dado.",
+      "fields": {
+        "account": {
+          "name": "Cuenta",
+          "description": "Qué cuenta de Sorenda; por defecto, la primera."
+        },
+        "text": {
+          "name": "Texto",
+          "description": "De qué avisar."
+        },
+        "at": {
+          "name": "Cuándo",
+          "description": "Cuándo, ISO 8601."
+        }
+      }
+    }
+  }
+}

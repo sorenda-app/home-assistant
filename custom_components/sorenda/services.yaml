@@ -1,0 +1,58 @@
+create_note:
+  fields:
+    account:
+      selector:
+        config_entry:
+          integration: sorenda
+    text:
+      required: true
+      example: "The door code is 1234"
+      selector:
+        text:
+          multiline: true
+    title:
+      selector:
+        text:
+    tags:
+      selector:
+        text:
+          multiple: true
+
+add_task:
+  fields:
+    account:
+      selector:
+        config_entry:
+          integration: sorenda
+    text:
+      required: true
+      example: "Buy batteries"
+      selector:
+        text:
+    due:
+      example: "2026-11-20"
+      selector:
+        text:
+    remind_minutes_before:
+      selector:
+        number:
+          min: 0
+          max: 10080
+          unit_of_measurement: min
+
+add_reminder:
+  fields:
+    account:
+      selector:
+        config_entry:
+          integration: sorenda
+    text:
+      required: true
+      example: "Check the oven"
+      selector:
+        text:
+    at:
+      required: true
+      example: "2026-11-17T09:00:00+03:00"
+      selector:
+        text:

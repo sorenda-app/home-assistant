@@ -1,0 +1,121 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sorenda",
+        "description": "在 Sorenda 中创建个人 API 密钥：设置 → API 密钥，需要 read 和 write 权限。",
+        "data": {
+          "name": "账户名称",
+          "url": "Sorenda 地址",
+          "api_key": "API 密钥"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Sorenda：新的 API 密钥",
+        "data": {
+          "api_key": "API 密钥"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Sorenda 拒绝了该密钥。",
+      "invalid_format": "Sorenda 密钥以 srnd_ 开头。",
+      "cannot_connect": "无法通过此地址连接 Sorenda。",
+      "missing_scope": "该密钥需要 read 和 write 权限。"
+    },
+    "abort": {
+      "already_configured": "该密钥已经设置过。",
+      "reauth_successful": "密钥已更新。"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Sorenda：访问与提醒",
+        "data": {
+          "speakers": "声音",
+          "ha_users": "Home Assistant 用户（文字聊天）",
+          "speaker_entity": "说话人传感器",
+          "tts_engine": "提醒的语音合成"
+        },
+        "description": "谁可以通过语音或聊天使用此账户。如果没有填写声音和用户，所有人都可以使用。声音名称需与说话人传感器显示的一致。无法识别的声音或过时的读数不会获得访问权限。"
+      }
+    }
+  },
+  "entity": {
+    "todo": {
+      "tasks": {
+        "name": "任务"
+      }
+    },
+    "sensor": {
+      "next_reminder": {
+        "name": "下一个提醒"
+      }
+    }
+  },
+  "services": {
+    "create_note": {
+      "name": "创建笔记",
+      "description": "在 Sorenda 中保存一条笔记。",
+      "fields": {
+        "account": {
+          "name": "账户",
+          "description": "使用哪个 Sorenda 账户；默认使用第一个。"
+        },
+        "text": {
+          "name": "文本",
+          "description": "笔记内容。"
+        },
+        "title": {
+          "name": "标题",
+          "description": "可选标题。"
+        },
+        "tags": {
+          "name": "标签",
+          "description": "可选标签。"
+        }
+      }
+    },
+    "add_task": {
+      "name": "添加任务",
+      "description": "向 Sorenda 添加一个任务。",
+      "fields": {
+        "account": {
+          "name": "账户",
+          "description": "使用哪个 Sorenda 账户；默认使用第一个。"
+        },
+        "text": {
+          "name": "文本",
+          "description": "要做的事。"
+        },
+        "due": {
+          "name": "截止",
+          "description": "日期（YYYY-MM-DD）或时间点（ISO 8601）。"
+        },
+        "remind_minutes_before": {
+          "name": "提前提醒",
+          "description": "截止前多少分钟提醒；需要截止时间。"
+        }
+      }
+    },
+    "add_reminder": {
+      "name": "添加提醒",
+      "description": "保存一条在指定时间提醒的笔记。",
+      "fields": {
+        "account": {
+          "name": "账户",
+          "description": "使用哪个 Sorenda 账户；默认使用第一个。"
+        },
+        "text": {
+          "name": "文本",
+          "description": "提醒的内容。"
+        },
+        "at": {
+          "name": "时间",
+          "description": "提醒时间，ISO 8601。"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sorenda",
+        "description": "Erstelle in Sorenda einen persönlichen API-Schlüssel: Einstellungen → API-Schlüssel, mit den Berechtigungen read und write.",
+        "data": {
+          "name": "Kontoname",
+          "url": "Sorenda-Adresse",
+          "api_key": "API-Schlüssel"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Sorenda: neuer API-Schlüssel",
+        "data": {
+          "api_key": "API-Schlüssel"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Sorenda hat den Schlüssel abgelehnt.",
+      "invalid_format": "Ein Sorenda-Schlüssel beginnt mit srnd_.",
+      "cannot_connect": "Sorenda ist unter dieser Adresse nicht erreichbar.",
+      "missing_scope": "Der Schlüssel braucht die Berechtigungen read und write."
+    },
+    "abort": {
+      "already_configured": "Dieser Schlüssel ist bereits eingerichtet.",
+      "reauth_successful": "Der Schlüssel wurde aktualisiert."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Sorenda: Zugriff und Erinnerungen",
+        "data": {
+          "speakers": "Stimmen",
+          "ha_users": "Home-Assistant-Benutzer (Text-Chat)",
+          "speaker_entity": "Sprecher-Sensor",
+          "tts_engine": "Sprachausgabe für Erinnerungen"
+        },
+        "description": "Wer dieses Konto per Stimme oder im Chat nutzen darf. Ohne eingetragene Stimmen und Benutzer steht das Konto allen offen. Stimmen werden so geschrieben, wie der Sprecher-Sensor sie nennt. Eine unbekannte Stimme oder ein veralteter Messwert erhält keinen Zugriff."
+      }
+    }
+  },
+  "entity": {
+    "todo": {
+      "tasks": {
+        "name": "Aufgaben"
+      }
+    },
+    "sensor": {
+      "next_reminder": {
+        "name": "Nächste Erinnerung"
+      }
+    }
+  },
+  "services": {
+    "create_note": {
+      "name": "Notiz erstellen",
+      "description": "Eine Notiz in Sorenda speichern.",
+      "fields": {
+        "account": {
+          "name": "Konto",
+          "description": "Welches Sorenda-Konto; standardmäßig das erste."
+        },
+        "text": {
+          "name": "Text",
+          "description": "Die Notiz."
+        },
+        "title": {
+          "name": "Titel",
+          "description": "Optionaler Titel."
+        },
+        "tags": {
+          "name": "Tags",
+          "description": "Optionale Tags."
+        }
+      }
+    },
+    "add_task": {
+      "name": "Aufgabe hinzufügen",
+      "description": "Eine Aufgabe zu Sorenda hinzufügen.",
+      "fields": {
+        "account": {
+          "name": "Konto",
+          "description": "Welches Sorenda-Konto; standardmäßig das erste."
+        },
+        "text": {
+          "name": "Text",
+          "description": "Was zu tun ist."
+        },
+        "due": {
+          "name": "Fällig",
+          "description": "Ein Tag (JJJJ-MM-TT) oder ein Zeitpunkt (ISO 8601)."
+        },
+        "remind_minutes_before": {
+          "name": "Erinnern vorher",
+          "description": "Minuten vor der Frist; braucht ein Fälligkeitsdatum."
+        }
+      }
+    },
+    "add_reminder": {
+      "name": "Erinnerung hinzufügen",
+      "description": "Eine Notiz speichern, die zu einem Zeitpunkt erinnert.",
+      "fields": {
+        "account": {
+          "name": "Konto",
+          "description": "Welches Sorenda-Konto; standardmäßig das erste."
+        },
+        "text": {
+          "name": "Text",
+          "description": "Woran erinnert werden soll."
+        },
+        "at": {
+          "name": "Um",
+          "description": "Wann, ISO 8601."
+        }
+      }
+    }
+  }
+}

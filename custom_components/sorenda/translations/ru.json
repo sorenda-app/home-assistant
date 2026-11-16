@@ -1,0 +1,121 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sorenda",
+        "description": "Создайте личный API-ключ в Sorenda: Настройки → API-ключи, с правами read и write.",
+        "data": {
+          "name": "Название аккаунта",
+          "url": "Адрес Sorenda",
+          "api_key": "API-ключ"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Sorenda: новый API-ключ",
+        "data": {
+          "api_key": "API-ключ"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Sorenda не приняла ключ.",
+      "invalid_format": "Ключ Sorenda начинается с srnd_.",
+      "cannot_connect": "Не удаётся связаться с Sorenda по этому адресу.",
+      "missing_scope": "Ключу нужны права read и write."
+    },
+    "abort": {
+      "already_configured": "Этот ключ уже подключён.",
+      "reauth_successful": "Ключ обновлён."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Sorenda: доступ и напоминания",
+        "data": {
+          "speakers": "Голоса",
+          "ha_users": "Пользователи Home Assistant (текстовый чат)",
+          "speaker_entity": "Сенсор говорящего",
+          "tts_engine": "Синтез речи для напоминаний"
+        },
+        "description": "Кто может пользоваться этим аккаунтом голосом или из чата. Если голоса и пользователи не указаны, аккаунт доступен всем. Голоса пишутся так, как их называет сенсор говорящего. Неизвестный голос или устаревшее показание сенсора доступа не дают."
+      }
+    }
+  },
+  "entity": {
+    "todo": {
+      "tasks": {
+        "name": "Задачи"
+      }
+    },
+    "sensor": {
+      "next_reminder": {
+        "name": "Следующее напоминание"
+      }
+    }
+  },
+  "services": {
+    "create_note": {
+      "name": "Создать заметку",
+      "description": "Сохранить заметку в Sorenda.",
+      "fields": {
+        "account": {
+          "name": "Аккаунт",
+          "description": "Какой аккаунт Sorenda; по умолчанию первый."
+        },
+        "text": {
+          "name": "Текст",
+          "description": "Текст заметки."
+        },
+        "title": {
+          "name": "Заголовок",
+          "description": "Необязательный заголовок."
+        },
+        "tags": {
+          "name": "Теги",
+          "description": "Необязательные теги."
+        }
+      }
+    },
+    "add_task": {
+      "name": "Добавить задачу",
+      "description": "Добавить задачу в Sorenda.",
+      "fields": {
+        "account": {
+          "name": "Аккаунт",
+          "description": "Какой аккаунт Sorenda; по умолчанию первый."
+        },
+        "text": {
+          "name": "Текст",
+          "description": "Что сделать."
+        },
+        "due": {
+          "name": "Срок",
+          "description": "День (ГГГГ-ММ-ДД) или момент (ISO 8601)."
+        },
+        "remind_minutes_before": {
+          "name": "Напомнить за",
+          "description": "За сколько минут до срока; нужен срок."
+        }
+      }
+    },
+    "add_reminder": {
+      "name": "Добавить напоминание",
+      "description": "Сохранить заметку с напоминанием на момент.",
+      "fields": {
+        "account": {
+          "name": "Аккаунт",
+          "description": "Какой аккаунт Sorenda; по умолчанию первый."
+        },
+        "text": {
+          "name": "Текст",
+          "description": "О чём напомнить."
+        },
+        "at": {
+          "name": "Когда",
+          "description": "Момент, ISO 8601."
+        }
+      }
+    }
+  }
+}
