@@ -239,12 +239,55 @@ class SearchNotesTool(_SorendaTool):
 
     async def _run(self, args: dict[str, Any]) -> JsonObjectType:
         notes = await self.data.client.search_notes(args["query"], limit=3)
-        return {
-            "notes": [
-                {
-                    "title": n.get("title") or "",
-                    "text": (n.get("preview") or n.get("text") or "")[:400],
-                }
-                for n in notes
-            ]
-        }
+        return {"notes": [_found_note(n) for n in notes]}
+
+
+def _found_note(note: dict[str, Any]) -> dict[str, Any]:
+    """A search hit as the agent reads it.
+
+    A typed card (a subscription, an order, a contact) often has no title or
+    text at all: what it says is in its data. Without the type and the data the
+    agent gets an empty note and answers that nothing was found.
+    """
+    out: dict[str, Any] = {
+        "title": note.get("title") or "",
+        "text": (note.get("preview") or note.get("text") or "")[:400],
+    }
+    if note_type := note.get("type"):
+        out["type"] = note_type
+    if card := _card_fields(note.get("data")):
+        out["card"] = card
+    return out
+
+
+def _card_fields(data: Any, budget: int = 400) -> str:
+    """The card's fields as "key: value" pairs, cut to a budget.
+
+    A list is kept by its entries' names: an order's items, a ticket's seats.
+    """
+    if not isinstance(data, dict):
+        return ""
+    parts: list[str] = []
+    used = 0
+    for key, value in data.items():
+        if isinstance(value, list):
+            value = ", ".join(_entry_name(v) for v in value if _entry_name(v))
+        if isinstance(value, bool) or value is None or isinstance(value, dict):
+            continue
+        text = str(value).strip()
+        if not text:
+            continue
+        part = f"{key}: {text}"
+        if used + len(part) > budget:
+            break
+        parts.append(part)
+        used += len(part) + 2
+    return "; ".join(parts)
+
+
+def _entry_name(entry: Any) -> str:
+    if isinstance(entry, dict):
+        entry = entry.get("name") or entry.get("label") or ""
+    if isinstance(entry, (str, int, float)) and not isinstance(entry, bool):
+        return str(entry).strip()
+    return ""

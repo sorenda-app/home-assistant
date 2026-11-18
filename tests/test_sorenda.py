@@ -311,3 +311,56 @@ async def test_setup_installs_blueprint_once(hass, sorenda_api, config_entry) ->
     await hass.config_entries.async_reload(config_entry.entry_id)
     await hass.async_block_till_done()
     assert path.read_text() == "# edited by the user\n"
+
+
+async def test_tool_search_shows_card_data(hass, sorenda_api, config_entry) -> None:
+    await _setup(hass, config_entry)
+    sorenda_api.get(
+        f"{URL}/api/notes",
+        json={
+            "notes": [
+                {
+                    "id": "s1",
+                    "type": "shopping.subscription",
+                    "text": "",
+                    "data": {
+                        "service": "Claude Code",
+                        "plan": "Pro",
+                        "price": 20,
+                        "currency": "USD",
+                        "renewsAt": "2026-10-25",
+                    },
+                },
+                {
+                    "id": "o1",
+                    "type": "shopping.order",
+                    "data": {
+                        "merchant": "Ozon",
+                        "status": "shipped",
+                        "items": [{"name": "Кроссовки", "qty": 1}, {"name": "Носки"}],
+                        "meta": {"x": 1},
+                    },
+                },
+                {"id": "n1", "title": "Дача", "text": "Полить грядки"},
+            ]
+        },
+    )
+    result = await _tool(hass, "sorenda_search_notes", {"query": "подписка Claude"})
+    assert result["notes"] == [
+        {
+            "title": "",
+            "text": "",
+            "type": "shopping.subscription",
+            "card": "service: Claude Code; plan: Pro; price: 20; currency: USD; renewsAt: 2026-10-25",
+        },
+        {
+            "title": "",
+            "text": "",
+            "type": "shopping.order",
+            "card": "merchant: Ozon; status: shipped; items: Кроссовки, Носки",
+        },
+        {"title": "Дача", "text": "Полить грядки"},
+    ]
+    url = _calls(sorenda_api, "GET", "/api/notes")[0][1]
+    assert url.query["anyWords"] == "true"
+    assert url.query["q"] == "подписка Claude"

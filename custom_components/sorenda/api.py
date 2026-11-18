@@ -200,9 +200,16 @@ class SorendaClient:
         return list((body or {}).get("fires") or []), new_etag
 
     async def search_notes(self, query: str, *, limit: int = 3) -> list[dict[str, Any]]:
-        """Return notes matching a query, as previews."""
+        """Return notes matching a query, as previews.
+
+        anyWords: a spoken query is a phrase ("моя подписка на Claude"), and
+        with every word required the grammar words alone ("моя", "на") find
+        nothing. Any word may match; ranking decides what comes first.
+        """
         _, body, _ = await self._request(
-            "GET", "/api/notes", params={"q": query, "limit": limit, "preview": "1"}
+            "GET",
+            "/api/notes",
+            params={"q": query, "limit": limit, "preview": "1", "anyWords": "true"},
         )
         return list((body or {}).get("notes") or [])
 
