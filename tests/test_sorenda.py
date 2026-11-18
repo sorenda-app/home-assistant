@@ -364,3 +364,48 @@ async def test_tool_search_shows_card_data(hass, sorenda_api, config_entry) -> N
     url = _calls(sorenda_api, "GET", "/api/notes")[0][1]
     assert url.query["anyWords"] == "true"
     assert url.query["q"] == "подписка Claude"
+
+
+async def test_tool_list_cards(hass, sorenda_api, config_entry) -> None:
+    await _setup(hass, config_entry)
+    sorenda_api.get(
+        f"{URL}/api/notes",
+        json={
+            "notes": [
+                {
+                    "id": "s1",
+                    "type": "shopping.subscription",
+                    "text": "",
+                    "data": {
+                        "service": "Apple iCloud",
+                        "price": 0.99,
+                        "renewsAt": "2026-12-05",
+                        "manageUrl": "https://apple.com/billing",
+                    },
+                },
+                {
+                    "id": "s2",
+                    "type": "shopping.subscription",
+                    "text": "Счёт от Apple",
+                    "data": {"service": "Apple Developer Program", "previewKey": "u/x.webp"},
+                },
+            ]
+        },
+    )
+    result = await _tool(hass, "sorenda_list_cards", {"kind": "subscriptions"})
+    assert result == {
+        "count": 2,
+        "cards": [
+            {"card": "service: Apple iCloud; price: 0.99; renewsAt: 2026-12-05"},
+            {"card": "service: Apple Developer Program", "text": "Счёт от Apple"},
+        ],
+    }
+    url = _calls(sorenda_api, "GET", "/api/notes")[0][1]
+    assert url.query["type"] == "shopping.subscription"
+    assert "q" not in url.query
+
+    await _tool(hass, "sorenda_list_cards", {"kind": "orders", "query": "Ozon"})
+    url = _calls(sorenda_api, "GET", "/api/notes")[1][1]
+    assert url.query["type"] == "shopping.order"
+    assert url.query["q"] == "Ozon"
+    assert url.query["anyWords"] == "true"

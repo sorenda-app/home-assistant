@@ -13,6 +13,7 @@ Save notes, add tasks and set reminders in [Sorenda](https://sorenda.app) by voi
   - `sorenda_list_tasks`: "what do I have today?"
   - `sorenda_complete_task`: "mark *call mum* done". If several tasks match, the assistant asks which one.
   - `sorenda_search_notes`: "what did I note about the door code?"
+  - `sorenda_list_cards`: "what subscriptions do I have?", "when does iCloud renew?", "where is my Ozon order?"
 
   Nothing here deletes or rewrites a note.
 - **To-do list** `todo.sorenda_tasks` with your open tasks. Home Assistant's built-in list intents work on it too ("add batteries to Sorenda"), even without an LLM.

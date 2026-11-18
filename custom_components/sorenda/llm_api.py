@@ -28,7 +28,8 @@ API_PROMPT = """Sorenda is the user's notes and tasks app. Use the sorenda_* too
 - asks to be reminded at a moment ("remind me in 20 minutes…", "remind me tomorrow at 9…") → sorenda_add_reminder;
 - asks what they have to do ("what do I have today?") → sorenda_list_tasks;
 - says a task is done ("mark … done", "I called mum") → sorenda_complete_task;
-- asks what they noted about something ("what did I note about…?") → sorenda_search_notes.
+- asks what they noted about something ("what did I note about…?") → sorenda_search_notes;
+- asks about their subscriptions, orders or event tickets ("what subscriptions do I have?", "when does iCloud renew?", "where is my order?", "when is the concert?") → sorenda_list_cards.
 The user may speak any language: match the intent, not these English phrases, and answer in their language.
 Prefer these over Home Assistant's shopping/to-do lists unless the user names another list.
 Now it is {now} ({tz}). Resolve relative times yourself and pass ISO 8601 with the offset, e.g. {example}.
@@ -85,6 +86,7 @@ class SorendaLLMAPI(llm.API):
                 ListTasksTool,
                 CompleteTaskTool,
                 SearchNotesTool,
+                ListCardsTool,
             )
         ]
         return llm.APIInstance(api=self, api_prompt=prompt, llm_context=llm_context, tools=tools)
@@ -260,6 +262,49 @@ def _found_note(note: dict[str, Any]) -> dict[str, Any]:
     return out
 
 
+# Card kinds the agent may list, and the Sorenda type each one is.
+CARD_KINDS = {
+    "subscriptions": "shopping.subscription",
+    "orders": "shopping.order",
+    "tickets": "shopping.ticket",
+}
+
+
+class ListCardsTool(_SorendaTool):
+    name = "sorenda_list_cards"
+    description = (
+        "List the user's subscriptions, orders or event tickets saved in Sorenda, "
+        "newest first, up to 30, each with its fields (price, renewal or delivery date, status). "
+        "Use it for every question about them: search returns only 3 notes."
+    )
+    annotations = _READ
+    parameters = vol.Schema(
+        {
+            vol.Required("kind", description="Which cards"): vol.In(list(CARD_KINDS)),
+            vol.Optional(
+                "query", description="A name to narrow to, e.g. iCloud or Ozon; omit for all"
+            ): str,
+        }
+    )
+
+    async def _run(self, args: dict[str, Any]) -> JsonObjectType:
+        cards = await self.data.client.list_cards(
+            CARD_KINDS[args["kind"]], (args.get("query") or "").strip()
+        )
+        out = []
+        for card in cards:
+            item: dict[str, Any] = {"card": _card_fields(card.get("data"), 300)}
+            if text := (card.get("text") or "").strip():
+                item["text"] = text[:200]
+            out.append(item)
+        return {"count": len(out), "cards": out}
+
+
+# Storage keys, links and file bookkeeping: nothing to say aloud.
+_SKIP_SUFFIXES = ("Key", "key", "Url", "url")
+_SKIP_KEYS = {"contentType", "size", "indexStatus", "elementCount"}
+
+
 def _card_fields(data: Any, budget: int = 400) -> str:
     """The card's fields as "key: value" pairs, cut to a budget.
 
@@ -270,6 +315,10 @@ def _card_fields(data: Any, budget: int = 400) -> str:
     parts: list[str] = []
     used = 0
     for key, value in data.items():
+        if key in _SKIP_KEYS or key.endswith(_SKIP_SUFFIXES):
+            continue
+        if isinstance(value, str) and value.startswith(("http://", "https://")):
+            continue
         if isinstance(value, list):
             value = ", ".join(_entry_name(v) for v in value if _entry_name(v))
         if isinstance(value, bool) or value is None or isinstance(value, dict):

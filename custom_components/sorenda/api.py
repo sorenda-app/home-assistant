@@ -213,6 +213,16 @@ class SorendaClient:
         )
         return list((body or {}).get("notes") or [])
 
+    async def list_cards(
+        self, note_type: str, query: str = "", *, limit: int = 30
+    ) -> list[dict[str, Any]]:
+        """Return one type's cards, newest first, narrowed by a query when given."""
+        params: dict[str, Any] = {"type": note_type, "limit": limit}
+        if query:
+            params.update(q=query, anyWords="true")
+        _, body, _ = await self._request("GET", "/api/notes", params=params)
+        return list((body or {}).get("notes") or [])
+
 
 def _message(body: Any, status: int) -> str:
     if isinstance(body, dict) and isinstance(body.get("error"), str):
